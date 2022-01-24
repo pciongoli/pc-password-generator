@@ -18,7 +18,7 @@ var passwordLength;
 
 // create a function that only allows users to select password length of 8-128
 function findLength() {
-  passwordLength = prompt("choose the number of characters you would like to have in your new password. Must be between 8 and 128 characters long.");
+  passwordLength = prompt("Choose the number of characters you would like to have in your new password. Must be between 8 and 128 characters long.");
     // if statement in order to prevent passwords less than 8 characters and greater than 128 characters
     if (passwordLength < 8) {
       alert("Please choose a password length between 8 and 128 characters.");
@@ -39,6 +39,12 @@ function findLength() {
     return (passwordLength)
 }
 
+// create a function for generatePassword
+
+function generatePassword() {
+  findLength();
+  console.log(findLength);
+}
 
 
 // Write password to the #password input
