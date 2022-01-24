@@ -5,6 +5,7 @@ var generateBtn = document.querySelector("#generate");
 var passwordLength;
 
 
+
 // create a function that will add numbers
 function addNumbers() {
   includeNumbers = prompt("Would you like to add numbers to your new passord? Please respond 'Yes' or 'No'.")
@@ -32,8 +33,35 @@ function addNumbers() {
 }
 
 // create a function that will add special characters
+function addSpecial() {
+  includeSpecial = prompt("Would you like to add special characters to your new password? Please respone 'Yes' or 'No'.");
+    includeSpecial = includeSpecial.toLowerCase();
+
+    // create if statement to determine if user wants to include special characters
+    if (includeSpecial === null) {
+      alert("Respond 'Yes' or 'No'.")
+      addSpecial();
+    }
+    else if (includeSpecial === "yes") {
+      includeSpecial = true;
+      return includeSpecial;
+    }
+    else if (includeSpecial === "no") {
+      includeSpecial = false;
+      return includeSpecial;
+    }
+    else {
+      alert("Respond 'Yes' or 'No'.")
+      addSpecial();
+    }
+    return includeSpecial;
+}
 
 // create a function that will add uppercase letters
+function addUpperCase() {
+  includeUpperCase = prompt("Would you like to add Upper Case letters to your new password? Please respond 'Yes' or 'No'.");
+    includeUpperCase = includeUpperCase.toLowerCase();
+}
 
 // create a function that will add lowercase letters
 
