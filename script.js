@@ -1,238 +1,194 @@
-// Array of special characters to be included in password
-var specialCharacters = [
-  '@',
-  '%',
-  '+',
-  '\\',
-  '/',
-  "'",
-  '!',
-  '#',
-  '$',
-  '^',
-  '?',
-  ':',
-  ',',
-  ')',
-  '(',
-  '}',
-  '{',
-  ']',
-  '[',
-  '~',
-  '-',
-  '_',
-  '.'
+// Define arrays of characters to be used for generating the password
+const specialCharacters = [
+   "@",
+   "%",
+   "+",
+   "\\",
+   "/",
+   "'",
+   "!",
+   "#",
+   "$",
+   "^",
+   "?",
+   ":",
+   ",",
+   ")",
+   "(",
+   "}",
+   "{",
+   "]",
+   "[",
+   "~",
+   "-",
+   "_",
+   ".",
+];
+const numericCharacters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const lowerCasedCharacters = [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e",
+   "f",
+   "g",
+   "h",
+   "i",
+   "j",
+   "k",
+   "l",
+   "m",
+   "n",
+   "o",
+   "p",
+   "q",
+   "r",
+   "s",
+   "t",
+   "u",
+   "v",
+   "w",
+   "x",
+   "y",
+   "z",
+];
+const upperCasedCharacters = [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E",
+   "F",
+   "G",
+   "H",
+   "I",
+   "J",
+   "K",
+   "L",
+   "M",
+   "N",
+   "O",
+   "P",
+   "Q",
+   "R",
+   "S",
+   "T",
+   "U",
+   "V",
+   "W",
+   "X",
+   "Y",
+   "Z",
 ];
 
-// Array of numeric characters to be included in password
-var numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-// Array of lowercase characters to be included in password
-var lowerCasedCharacters = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z'
-];
-
-// Array of uppercase characters to be included in password
-var upperCasedCharacters = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'Q',
-  'R',
-  'S',
-  'T',
-  'U',
-  'V',
-  'W',
-  'X',
-  'Y',
-  'Z'
-];
-
-// Function to prompt user for password options
+// Define the getPasswordOptions function for prompting the user and returning the password options as an object
 function getPasswordOptions() {
-  // Variable to store length of password from user input
-  var length = parseInt(
-    prompt('How many characters would you like your password to contain?')
-  );
+   let passwordLength = parseInt(
+      prompt(
+         "How many characters would you like your password to contain? (Please enter a number between 8 and 128)"
+      )
+   );
 
-  // Conditional statement to check if password length is a number. Prompts end if this evaluates false
-  if (Number.isNaN(length)) {
-    alert('Password length must be provided as a number');
-    return null;
-  }
+   while (isNaN(passwordLength) || passwordLength < 8 || passwordLength > 128) {
+      passwordLength = parseInt(
+         prompt("Invalid input. Please enter a number between 8 and 128.")
+      );
+   }
 
-  // Conditional statement to check if password length is at least 8 characters long. Prompts end if this evaluates false
-  if (length < 8) {
-    alert('Password length must be at least 8 characters');
-    return null;
-  }
+   const hasSpecialCharacters = confirm(
+      "Click OK to confirm including special characters."
+   );
+   const hasNumericCharacters = confirm(
+      "Click OK to confirm including numeric characters."
+   );
+   const hasLowerCasedCharacters = confirm(
+      "Click OK to confirm including lowercase characters."
+   );
+   const hasUpperCasedCharacters = confirm(
+      "Click OK to confirm including uppercase characters."
+   );
 
-  // Conditional statement to check if password length is less than 128 characters long. Prompts end if this evaluates false
-  if (length > 128) {
-    alert('Password length must less than 129 characters');
-    return null;
-  }
+   const passwordOptions = {
+      passwordLength: passwordLength,
+      hasSpecialCharacters: hasSpecialCharacters,
+      hasNumericCharacters: hasNumericCharacters,
+      hasLowerCasedCharacters: hasLowerCasedCharacters,
+      hasUpperCasedCharacters: hasUpperCasedCharacters,
+   };
 
-  // Variable to store boolean regarding the inclusion of special characters
-  var hasSpecialCharacters = confirm(
-    'Click OK to confirm including special characters.'
-  );
-
-  // Variable to store boolean regarding the inclusion of numeric characters
-  var hasNumericCharacters = confirm(
-    'Click OK to confirm including numeric characters.'
-  );
-
-  // Variable to store boolean regarding the inclusion of lowercase characters
-  var hasLowerCasedCharacters = confirm(
-    'Click OK to confirm including lowercase characters.'
-  );
-
-  // Variable to store boolean regarding the inclusion of uppercase characters
-  var hasUpperCasedCharacters = confirm(
-    'Click OK to confirm including uppercase characters.'
-  );
-
-  // Conditional statement to check if user does not include any types of characters. Password generator ends if all four variables evaluate to false
-  if (
-    hasSpecialCharacters === false &&
-    hasNumericCharacters === false &&
-    hasLowerCasedCharacters === false &&
-    hasUpperCasedCharacters === false
-  ) {
-    alert('Must select at least one character type');
-    return null;
-  }
-
-  // Object to store user input
-  var passwordOptions = {
-    length: length,
-    hasSpecialCharacters: hasSpecialCharacters,
-    hasNumericCharacters: hasNumericCharacters,
-    hasLowerCasedCharacters: hasLowerCasedCharacters,
-    hasUpperCasedCharacters: hasUpperCasedCharacters
-  };
-
-  return passwordOptions;
+   return passwordOptions;
 }
 
-// Function for getting a random element from an array
-function getRandom(arr) {
-  var randIndex = Math.floor(Math.random() * arr.length);
-  var randElement = arr[randIndex];
-
-  return randElement;
-}
-
-// Function to generate password with user input
+// Define the generatePassword function for generating a password based on the password options
 function generatePassword() {
-  var options = getPasswordOptions();
-  // Variable to store password as it's being concatenated
-  var result = [];
+   const options = getPasswordOptions();
+   const possibleCharacters = [];
+   const guaranteedCharacters = [];
 
-  // Array to store types of characters to include in password
-  var possibleCharacters = [];
+   if (options.hasSpecialCharacters) {
+      possibleCharacters.push(...specialCharacters);
+      guaranteedCharacters.push(getRandomCharacter(specialCharacters));
+   }
 
-  // Array to contain one of each type of chosen character to ensure each will be used
-  var guaranteedCharacters = [];
+   if (options.hasNumericCharacters) {
+      possibleCharacters.push(...numericCharacters);
+      guaranteedCharacters.push(getRandomCharacter(numericCharacters));
+   }
 
-  // Check if an options object exists, if not exit the function
-  if (!options) return null;
+   if (options.hasLowerCasedCharacters) {
+      possibleCharacters.push(...lowerCasedCharacters);
+      guaranteedCharacters.push(getRandomCharacter(lowerCasedCharacters));
+   }
 
-  // Conditional statement that adds array of special characters into array of possible characters based on user input
-  // Push new random special character to guaranteedCharacters
-  if (options.hasSpecialCharacters) {
-    possibleCharacters = possibleCharacters.concat(specialCharacters);
-    guaranteedCharacters.push(getRandom(specialCharacters));
-  }
+   if (options.hasUpperCasedCharacters) {
+      possibleCharacters.push(...upperCasedCharacters);
+      guaranteedCharacters.push(getRandomCharacter(upperCasedCharacters));
+   }
 
-  // Conditional statement that adds array of numeric characters into array of possible characters based on user input
-  // Push new random special character to guaranteedCharacters
-  if (options.hasNumericCharacters) {
-    possibleCharacters = possibleCharacters.concat(numericCharacters);
-    guaranteedCharacters.push(getRandom(numericCharacters));
-  }
+   const remainingLength = options.passwordLength - guaranteedCharacters.length;
 
-  // Conditional statement that adds array of lowercase characters into array of possible characters based on user input
-  // Push new random lower-cased character to guaranteedCharacters
-  if (options.hasLowerCasedCharacters) {
-    possibleCharacters = possibleCharacters.concat(lowerCasedCharacters);
-    guaranteedCharacters.push(getRandom(lowerCasedCharacters));
-  }
+   for (let i = 0; i < remainingLength; i++) {
+      const randomCharacter = getRandomCharacter(possibleCharacters);
+      guaranteedCharacters.push(randomCharacter);
+   }
 
-  // Conditional statement that adds array of uppercase characters into array of possible characters based on user input
-  // Push new random upper-cased character to guaranteedCharacters
-  if (options.hasUpperCasedCharacters) {
-    possibleCharacters = possibleCharacters.concat(upperCasedCharacters);
-    guaranteedCharacters.push(getRandom(upperCasedCharacters));
-  }
-
-  // For loop to iterate over the password length from the options object, selecting random indices from the array of possible characters and concatenating those characters into the result variable
-  for (var i = 0; i < options.length; i++) {
-    var possibleCharacter = getRandom(possibleCharacters);
-
-    result.push(possibleCharacter);
-  }
-
-  // Mix in at least one of each guaranteed character in the result
-  for (var i = 0; i < guaranteedCharacters.length; i++) {
-    result[i] = guaranteedCharacters[i];
-  }
-
-  // Transform the result into a string and pass into writePassword
-  return result.join('');
+   return guaranteedCharacters.join("");
 }
 
-// Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
+// Define the getRandomCharacter function for getting a random character from an array
+function getRandomCharacter(charactersArray) {
+   return charactersArray[Math.floor(Math.random() * charactersArray.length)];
+}
 
-// Write password to the #password input
+// Define the writePassword function for writing the generated password to the DOM
 function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector('#password');
+   const password = generatePassword();
+   const passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
+   passwordText.value = password;
+
+   // Create a copy button
+   const copyBtn = document.createElement("button");
+   copyBtn.classList.add("btn");
+   copyBtn.textContent = "Copy Password";
+
+   // Add an event listener to copy the password to the clipboard
+   copyBtn.addEventListener("click", function () {
+      const passwordText = document.querySelector("#password");
+      passwordText.select();
+      document.execCommand("copy");
+   });
+
+   // Add the copy button to the card footer
+   const cardFooter = document.querySelector(".card-footer");
+   cardFooter.appendChild(copyBtn);
 }
 
-// Add event listener to generate button
-generateBtn.addEventListener('click', writePassword);
+// Get a reference to the #generate element and add an event listener for generating a password
+const generateBtn = document.querySelector("#generate");
+generateBtn.addEventListener("click", writePassword);
+
+// Disable the copy button initially
+const copyBtn = document.querySelector("#copy");
+copyBtn.disabled = true;
